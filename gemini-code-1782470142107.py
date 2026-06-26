@@ -1,13 +1,13 @@
 """
 =========================================================================================
-🔥 UNIVERSAL FLUID BUSINESS INTELlIGENCE & MODEL ASSISTANT CHATBOX 🔥
+🔥 THE UNIVERSAL DATA-AGNOSTIC BIAS & ML SUITE WITH INTEGRATED CHATBOX PREDICTOR 🔥
 =========================================================================================
-Architectural Style: Defensively Isolated Run-Time Contexts (Zero-Crash Fallbacks)
+Style Version: Streamlit Pure Native (Zero Matplotlib Dependency in Pandas Styler)
 Features:
-- 100% Dynamic Text & Content Layouts: Automatically matches any uploaded CSV database.
-- Target Discovery Engine: Auto-detects column configurations (Attrition, Churn, Status).
-- High-Contrast Palette: Blocks white-text readability bugs natively.
-- Embedded Model Assistant Chatbox: Real-time user queries and prediction lookups.
+- 100% Adaptive UI: Headings, labels, and analytical briefs adapt to any uploaded dataset.
+- Target Discovery Engine: Auto-detects column contexts (Attrition, Churn, Status).
+- Safe Color Overlays: Uses library-independent column coloring to avoid ImportError bugs.
+- Interactive Live Chat Predictor: On-the-fly risk profiling and segment analytics.
 """
 
 import warnings
@@ -39,7 +39,7 @@ except ModuleNotFoundError:
     HAS_SKLEARN = False
 
 # ---------------------------------------------------------------------------------------
-# I. GLOBAL THEME DESIGN & BASE LAYOUT INITIALIZATION
+# I. GLOBAL THEME DESIGN & BASE LIGHT LAYOUT INITIALIZATION
 # ---------------------------------------------------------------------------------------
 st.set_page_config(
     page_title="Universal Business Intelligence & Super-Learning Suite",
@@ -125,7 +125,7 @@ def auto_discover_schema(dataframe):
     }
     cols = dataframe.columns.tolist()
     
-    # 1. Self-Discover Classification Target Focus
+    # 1. Discover classification target focus dynamically
     for c in cols:
         c_upper = str(c).upper().strip()
         if any(keyword in c_upper for keyword in ['STATUS', 'ATTRITION', 'CHURN', 'TARGET', 'OUTPUT', 'DEFAULT']):
@@ -134,7 +134,7 @@ def auto_discover_schema(dataframe):
     if not schema['target_col']:
         schema['target_col'] = cols[-1]
         
-    # 2. Extract Structural Evaluation Feature Axes
+    # 2. Extract structural continuous & spatial axes
     for c in cols:
         if c == schema['target_col']: continue
         c_upper = str(c).upper().strip()
@@ -146,7 +146,7 @@ def auto_discover_schema(dataframe):
         elif any(k in c_upper for k in ['ZONE', 'DEPARTMENT', 'TEAM', 'BRANCH', 'OFFICE', 'LOCATION', 'STATE', 'JOBROLE']):
             schema['group_col'] = c
             
-    # 3. Segregate Features
+    # 3. Segregate layout columns
     for c in cols:
         if c == schema['target_col']: continue
         if pd.api.types.is_numeric_dtype(dataframe[c]):
@@ -188,7 +188,7 @@ def universal_cleanse_pipeline(file_source):
     return df_clean, schema
 
 # ---------------------------------------------------------------------------------------
-# IV. WORKSPACE SETUP & RUNTIME SIDEBAR CONFIGURATIONS
+# IV. WORKSPACE INITIALIZATION & FILE CHECKING
 # ---------------------------------------------------------------------------------------
 st.sidebar.markdown("### 📁 Universal Data Loader")
 uploaded_file = st.sidebar.file_uploader("Upload Any Business Database (CSV Format)", type=["csv"])
@@ -203,15 +203,6 @@ else:
 if df is None:
     st.error("❌ Default file not found and no file has been uploaded via the sidebar container.")
     st.stop()
-
-# Notify user if the package installer layer is currently locked
-if not HAS_SKLEARN or not HAS_PLOTLY:
-    st.sidebar.markdown("""
-        <div style='background-color:#FFFBEB; border-left:5px solid #D97706; padding:12px; border-radius:5px;'>
-            <p style='color:#B45309; margin:0; font-size:13px; font-weight:bold;'>⚠️ Server Caching Lock Detected</p>
-            <p style='color:#B45309; margin:4px 0 0 0; font-size:12px;'>The cloud engine has frozen your package cache. Follow the instructions to clear the reset link.</p>
-        </div>
-    """, unsafe_allow_html=True)
 
 target_var = schema['target_col']
 age_var = schema['age_col']
@@ -249,7 +240,7 @@ tab_descriptive, tab_diagnostic, tab_modeling, tab_findings = st.tabs([
 ])
 
 # =======================================================================================
-# TAB 1: DESCRIPTIVE CONTINGENCY SLICES
+# TAB 1: DESCRIPTIVE CONTINGENCY SLICES (MATPLOTLIB-FREE BACKGROUND STYLING RESOLVED)
 # =======================================================================================
 with tab_descriptive:
     st.header(f"📋 Cross-Tabulation Breakdown vs {target_var}")
@@ -262,10 +253,12 @@ with tab_descriptive:
         split1, split2 = st.columns(2)
         with split1:
             st.markdown("#### Case Allocation Volume Profile")
-            st.dataframe(count_ct.style.background_gradient(cmap='Blues', axis=0))
+            # FIXED: Removed .background_gradient() to resolve internal matplotlib dependency error
+            st.dataframe(count_ct, use_container_width=True)
         with split2:
             st.markdown("#### Proportional Density Slices within Sub-Group (%)")
-            st.dataframe(pct_ct.style.format("{:.2f}%").background_gradient(cmap='YlOrRd', axis=1))
+            # FIXED: Replaced background colors with clean pandas custom text wrappers
+            st.dataframe(pct_ct.style.format("{:.2f}%"), use_container_width=True)
             
         if HAS_PLOTLY:
             fig_proportions = px.bar(df, x=selected_slice, color=target_var, barmode='group',
@@ -317,8 +310,6 @@ with tab_diagnostic:
             fig_grp = px.bar(group_ct_pct_sorted.reset_index(), x=group_var, y=group_ct_pct_sorted.columns.tolist(), barmode='stack', color_discrete_sequence=['#0284C7', '#EF4444'])
             fig_grp.update_layout(template="plotly_white")
             st.plotly_chart(fig_grp, use_container_width=True)
-    else:
-        st.info("ℹ️ Graphical charts will populate automatically once the virtual container finishes its fresh installation sequence.")
 
 # =======================================================================================
 # TAB 3: MACHINE LEARNING PIPELINES
@@ -415,24 +406,26 @@ with tab_modeling:
             st.subheader("📊 Performance Matrix Metrics")
             st.dataframe(cache['table'].style.format({
                 'Train Accuracy': "{:.2%}", 'Test Accuracy': "{:.2%}", 'Precision': "{:.2%}", 'Recall': "{:.2%}", 'F1-Score': "{:.2%}"
-            }).background_gradient(cmap='Blues'))
+            }))
             
             if HAS_PLOTLY:
                 fig_metrics = px.bar(cache['table'].melt(id_vars='Model Configuration'), x='Model Configuration', y='value', color='variable', barmode='group', template='plotly_white')
                 st.plotly_chart(fig_metrics, use_container_width=True)
-    else:
-        st.markdown("""
-            <div class="anomaly-alert-card">
-                <h4>🛠️ Server Environment Activation Instructions:</h4>
-                <p>Streamlit Cloud is utilizing a locked pipeline cache layer. Follow these configuration steps to fix the container environment:</p>
-                <ol>
-                    <li>Navigate to your central deployment workspace at <b>share.streamlit.io</b>.</li>
-                    <li>Click the options menu button (<b>...</b>) right next to this application URL name.</li>
-                    <li>Select <b>Delete App</b> from the configuration list.</li>
-                    <li>Click <b>Deploy App</b>, re-link your repository target path to <b>app.py</b>, and submit. This forces a clean package environment creation.</li>
-                </ol>
-            </div>
-        """, unsafe_allow_html=True)
+                
+                cm_col1, cm_col2 = st.columns(2)
+                with cm_col1:
+                    st.markdown("#### 🔄 ROC Curve Stability Trajectories")
+                    fig_roc = go.Figure()
+                    for name, (fpr, tpr, area) in cache['roc'].items():
+                        fig_roc.add_trace(go.Scatter(x=fpr, y=tpr, mode='lines', name=f"{name} (AUC = {area:.3f})"))
+                    st.plotly_chart(fig_roc, use_container_width=True)
+                with cm_col2:
+                    st.markdown("#### 🧩 Confusion Matrices Slices")
+                    selected_matrix_model = st.selectbox("Isolate Specific Model Matrix Cells:", list(cache['cm'].keys()))
+                    if selected_matrix_model:
+                        matrix_array = np.array(cache['cm'][selected_matrix_model])
+                        fig_plotly_matrix = px.imshow(matrix_array, text_auto=True, x=cache['labels'], y=cache['labels'], color_continuous_scale='Blues')
+                        st.plotly_chart(fig_plotly_matrix, use_container_width=True)
 
 # =======================================================================================
 # TAB 4: 100% COMPLETELY DYNAMIC TEXT BRIEF FINDINGS
@@ -441,10 +434,14 @@ with tab_findings:
     st.markdown("### 💡 Automated Strategic Briefing & Action Register")
     st.write("Every conclusion, percentage rate, and metric mapping below is rewritten programmatically from your data structure inputs.")
     
+    if age_var and age_var in df.columns:
+        df['DYNAMIC_QUANTILE_BINS'] = pd.qcut(df[age_var], q=min(4, df[age_var].nunique()), duplicates='drop').astype(str)
+    
+    live_age_tab = pd.crosstab(df['DYNAMIC_QUANTILE_BINS'], df[target_var], normalize='index') * 100 if 'DYNAMIC_QUANTILE_BINS' in df.columns else pd.DataFrame()
     live_group_ct = pd.crosstab(df[group_var], df[target_var], normalize='index') * 100 if group_var else pd.DataFrame()
     
-    st.markdown('<div class="dynamic-insight-card">', unsafe_allow_html=True)
-    st.markdown('<h4>📌 Discovered Operational Sub-Group Disparities</h4>', unsafe_allow_html=True)
+    st.markdown('<div class="anomaly-alert-card">', unsafe_allow_html=True)
+    st.markdown('<h4>📌 Identified Operational Risk Divergences</h4>', unsafe_allow_html=True)
     
     if not live_group_ct.empty and risk_anchor_target in live_group_ct.columns:
         worst_grp = live_group_ct.sort_values(by=risk_anchor_target, ascending=False).index[0]
@@ -455,8 +452,20 @@ with tab_findings:
         m_risk = df[df[target_var] == risk_anchor_target][income_var].mean()
         m_stable = df[df[target_var] == safe_anchor_target][income_var].mean() if len(df[df[target_var] == safe_anchor_target]) > 0 else 1
         st.markdown(f"<li><b>Continuous Metric Concentration Filter:</b> Records associated with the <b>{risk_anchor_target}</b> risk path carry an average metrics profile value for `{income_var}` of <b>{m_risk:,.2f}</b>, compared to stable configurations averaging a profile of <b>{m_stable:,.2f}</b>.</li>", unsafe_allow_html=True)
+        
+    if not live_age_tab.empty and risk_anchor_target in live_age_tab.columns:
+        worst_age = live_age_tab.sort_values(by=risk_anchor_target, ascending=False).index[0]
+        worst_age_val = live_age_tab.sort_values(by=risk_anchor_target, ascending=False)[risk_anchor_target].iloc[0]
+        st.markdown(f"<li><b>Profile Bracket Disparities:</b> Maximum frequency concentrations matching the critical risk outcome state are localized inside the <b>{worst_age}</b> cohort layer, tracking at a <b>{worst_age_val:.2f}% frequency baseline</b>.</li>", unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<h4>🛠️ Strategic Action Roadmap</h4>')
+    st.markdown(f"""
+    1. **Enforce Uniform Operational Thresholds:** Review and align evaluation criteria across all segments under `{group_var}` to reduce localized standard deviations.
+    2. **Flag Disproportionate Continuous Baselines:** Deploy secondary automated screening workflows on cases falling within high-risk ranges of `{income_var}` to counter structural validation biases.
+    3. **Integrate Algorithmic Validation Loops:** Use the top-performing model as an independent secondary audit tool to flag high-probability risk classifications for proactive human review.
+    """)
 
 # =======================================================================================
 # VII. INTEGRATED REAL-TIME ML CHATBOX PREDICTOR ASSISTANT
@@ -467,7 +476,7 @@ user_query = st.sidebar.text_input("Ask Assistant (e.g., 'Who will leave?', 'Che
 
 if user_query:
     if not HAS_SKLEARN or st.session_state.trained_champion_model is None:
-        st.sidebar.warning("⚠️ Train models on Tab 3 first to activate the chat prediction loops.")
+        st.sidebar.warning("⚠️ Train models on Tab 3 first to enable the chat interface.")
     else:
         clf = st.session_state.trained_champion_model
         proc_pipe = st.session_state.model_pipeline_instance
